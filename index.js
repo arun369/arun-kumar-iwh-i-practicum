@@ -2,22 +2,31 @@ const express = require('express');
 const axios = require('axios');
 const app = express();
 
+//https://www.npmjs.com/package/dotenv
+require('dotenv').config();
+
 app.set('view engine', 'pug');
 app.use(express.static(__dirname + '/public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // * Please include the private app access token in your repo BUT only an access token built in a TEST ACCOUNT. Don't do this practicum in your normal account.
-const PRIVATE_APP_ACCESS = '';
+const PRIVATE_APP_ACCESS = process.env.HSTESTAPPKEY;
 
 // TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
 app.get("/", async (req, res) => {
-  try {
-    let carList = new Object;
+    const url =
+    "https://api.hubspot.com/crm/v3/objects/2-16269829?limit=10&&properties=car_category&properties=car_type&properties=name&properties=mileage&archived=false";
+  const headers = {
+    Authorization: `Bearer ${PRIVATE_APP_ACCESS}`,
+    "Content-Type": "application/json",
+  };
 
-    carList[1] = {properties: {carName: "BMW X3", carType: "sedan", carMileage: "10miles/L"}};
-    carList[2] = {properties: {carName: "BMW X1", carType: "sedan", carMileage: "10miles/L"}};
-    carList[3] = {properties: {carName: "Mercedes 500", carType: "sedan", carMileage: "10miles/L"}};
+  try {
+
+    const resp = await axios.get(url, { headers });
+    const carList = resp.data.results;
+    console.log(carList);
 
     res.render("cars-list", { title: "List of all cars", carList });
   } catch (error) {

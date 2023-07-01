@@ -9,5 +9,5 @@ html
         .cards 
             each car in carList
                 .card 
-                    h2.card__name #{car.properties.carName}  #{car.properties.carType}
-                    p.card__email #{car.properties.carMileage}
+                    h2.card__name #{car.properties.name}  #{car.properties.car_type} - #{car.properties.car_category}
+                    p.card__email #{car.properties.mileage}
