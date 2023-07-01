@@ -13,7 +13,13 @@ const PRIVATE_APP_ACCESS = '';
 // TODO: ROUTE 1 - Create a new app.get route for the homepage to call your custom object data. Pass this data along to the front-end and create a new pug template in the views folder.
 app.get("/", async (req, res) => {
   try {
-    res.send("cars list" );
+    let carList = new Object;
+
+    carList[1] = {properties: {carName: "BMW X3", carType: "sedan", carMileage: "10miles/L"}};
+    carList[2] = {properties: {carName: "BMW X1", carType: "sedan", carMileage: "10miles/L"}};
+    carList[3] = {properties: {carName: "Mercedes 500", carType: "sedan", carMileage: "10miles/L"}};
+
+    res.render("cars-list", { title: "List of all cars", carList });
   } catch (error) {
     console.error(error);
   }
